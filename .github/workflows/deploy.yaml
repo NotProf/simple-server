@@ -10,20 +10,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: akhileshns/heroku-deploy@v3.13.15
-        with:
-          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-          heroku_app_name: "simple-node-serv"
-          heroku_email: "igor.karpyuk00@gmail.com"
-
-  release:
-    depends-on: deploy
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
@@ -45,6 +31,12 @@ jobs:
             Release ${{ steps.extract_version.outputs.version }}
           draft: false
           prerelease: false
+
+      - uses: akhileshns/heroku-deploy@v3.13.15
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: "simple-node-serv"
+          heroku_email: "igor.karpyuk00@gmail.com"
 
       - name: Update Heroku Config Vars
         run: |
